@@ -5,7 +5,8 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 
 // import internal
-const { getTest, getBrands, getProducts } = require("./handlers/getHadlers");
+const { getTest, getBrands, getProducts } = require("./handlers/getHandlers");
+const createAProduct = require("./handlers/createHandlers");
 // create express app
 const app = express();
 
@@ -46,15 +47,14 @@ async function run() {
     app.get("/brands", (req, res) => getBrands(req, res, brandCollection));
 
     // get all brands
-    app.get("/brands", (req, res) => getProducts(req, res, productCollection));
+    app.get("/products", (req, res) =>
+      getProducts(req, res, productCollection)
+    );
 
-    // get all products
     // crate a product
-    app.post("/products", async (req, res) => {
-      const product = req.body;
-      const result = await productCollection.insertOne(product);
-      res.send(result);
-    });
+    app.post("/products", (req, res) =>
+      createAProduct(req, res, productCollection)
+    );
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
