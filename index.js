@@ -4,6 +4,8 @@ const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 
+// import internal
+const { getTest, getBrands, getProducts } = require("./handlers/getHadlers");
 // create express app
 const app = express();
 
@@ -28,17 +30,25 @@ const client = new MongoClient(uri, {
 });
 
 // apis || routes
-app.get("/", (req, res) => {
-  res.send("UniqueIt server is running...");
-});
+app.get("/", getTest);
 
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const db = client.db("uniqueit");
+
+    // collection
+    const brandCollection = db.collection("brands");
     const productCollection = db.collection("products");
 
+    // get all brands
+    app.get("/brands", (req, res) => getBrands(req, res, brandCollection));
+
+    // get all brands
+    app.get("/brands", (req, res) => getProducts(req, res, productCollection));
+
+    // get all products
     // crate a product
     app.post("/products", async (req, res) => {
       const product = req.body;
