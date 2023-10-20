@@ -18,6 +18,7 @@ const {
   createACartProduct,
 } = require("./handlers/createHandlers");
 const deleteACartProduct = require("./handlers/deleteHandler");
+const updateAProduct = require("./handlers/updateHandler");
 
 // create express app
 const app = express();
@@ -73,7 +74,7 @@ async function run() {
     );
 
     // get a product
-    app.get("/products/details/:id", (req, res) =>
+    app.get("/product/:id", (req, res) =>
       getAProduct(req, res, productCollection)
     );
 
@@ -84,6 +85,10 @@ async function run() {
     // crate a  cart product
     app.post("/carts", (req, res) =>
       createACartProduct(req, res, cartCollection)
+    );
+    // update a  product
+    app.put("/products/:id", (req, res) =>
+      updateAProduct(req, res, productCollection)
     );
     // delete a  cart product
     app.delete("/carts/:id", (req, res) =>

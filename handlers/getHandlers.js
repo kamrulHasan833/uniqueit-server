@@ -20,6 +20,7 @@ const getProducts = async (req, res, collection) => {
 
   res.send(result);
 };
+
 // get all products uder a brand
 const getBrandProducts = async (req, res, collection) => {
   const brand = req.params.brand;
@@ -39,6 +40,7 @@ const getCartProducts = async (req, res, collection) => {
 // get a product
 const getAProduct = async (req, res, collection) => {
   const id = req.params.id;
+  console.log(id);
   const result = await collection.findOne({ _id: new ObjectId(id) });
 
   res.send(result);
