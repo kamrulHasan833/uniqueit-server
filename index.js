@@ -5,8 +5,20 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 require("dotenv").config();
 
 // import internal
-const { getTest, getBrands, getProducts } = require("./handlers/getHandlers");
-const createAProduct = require("./handlers/createHandlers");
+const {
+  getTest,
+  getBrands,
+  getProducts,
+  getBrandProducts,
+  getAProduct,
+  getCartProducts,
+} = require("./handlers/getHandlers");
+const {
+  createAProduct,
+  createACartProduct,
+} = require("./handlers/createHandlers");
+const deleteACartProduct = require("./handlers/deleteHandler");
+
 // create express app
 const app = express();
 
@@ -42,6 +54,7 @@ async function run() {
     // collection
     const brandCollection = db.collection("brands");
     const productCollection = db.collection("products");
+    const cartCollection = db.collection("carts");
 
     // get all brands
     app.get("/brands", (req, res) => getBrands(req, res, brandCollection));
@@ -50,10 +63,31 @@ async function run() {
     app.get("/products", (req, res) =>
       getProducts(req, res, productCollection)
     );
+    // get all products under a brand
+    app.get("/products/:brand", (req, res) =>
+      getBrandProducts(req, res, productCollection)
+    );
+    // get all cart products
+    app.get("/carts/:username", (req, res) =>
+      getCartProducts(req, res, cartCollection)
+    );
+
+    // get a product
+    app.get("/products/details/:id", (req, res) =>
+      getAProduct(req, res, productCollection)
+    );
 
     // crate a product
     app.post("/products", (req, res) =>
       createAProduct(req, res, productCollection)
+    );
+    // crate a  cart product
+    app.post("/carts", (req, res) =>
+      createACartProduct(req, res, cartCollection)
+    );
+    // delete a  cart product
+    app.delete("/carts/:id", (req, res) =>
+      deleteACartProduct(req, res, cartCollection)
     );
 
     // Send a ping to confirm a successful connection
