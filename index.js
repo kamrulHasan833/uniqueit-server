@@ -32,7 +32,7 @@ app.use(cors());
 
 //mongodb configuration
 
-const uri = `mongodb+srv://${process.env.USER_NAME_MDB}:${process.env.USER_PASSWORD_MDB}@cluster0.qoh5erv.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.VERCEL_ENV_USER_NAME_MDB}:${process.env.VERCEL_ENV_USER_PASSWORD_MDB}@cluster0.qoh5erv.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -49,7 +49,7 @@ app.get("/", getTest);
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     const db = client.db("uniqueit");
 
     // collection
@@ -68,6 +68,7 @@ async function run() {
     app.get("/products/:brand", (req, res) =>
       getBrandProducts(req, res, productCollection)
     );
+
     // get all cart products
     app.get("/carts/:username", (req, res) =>
       getCartProducts(req, res, cartCollection)
@@ -86,6 +87,7 @@ async function run() {
     app.post("/carts", (req, res) =>
       createACartProduct(req, res, cartCollection)
     );
+
     // update a  product
     app.put("/products/:id", (req, res) =>
       updateAProduct(req, res, productCollection)
@@ -96,7 +98,7 @@ async function run() {
     );
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );

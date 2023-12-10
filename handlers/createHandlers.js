@@ -10,4 +10,5 @@ const createACartProduct = async (req, res, collection) => {
   const result = await collection.insertOne(product);
   res.send(result);
 };
+
 module.exports = { createAProduct, createACartProduct };

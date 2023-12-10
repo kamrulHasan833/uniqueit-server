@@ -8,6 +8,7 @@ const getTest = async (req, res) => {
 const getBrands = async (req, res, collection) => {
   const cursor = collection.find();
   const result = await cursor.toArray();
+
   const brands = result.filter((brand) => brand.brand);
 
   res.send(brands);
@@ -17,7 +18,7 @@ const getBrands = async (req, res, collection) => {
 const getProducts = async (req, res, collection) => {
   const cursor = collection.find();
   const result = await cursor.toArray();
-
+  console.log("hijlda");
   res.send(result);
 };
 
@@ -40,7 +41,7 @@ const getCartProducts = async (req, res, collection) => {
 // get a product
 const getAProduct = async (req, res, collection) => {
   const id = req.params.id;
-  console.log(id);
+
   const result = await collection.findOne({ _id: new ObjectId(id) });
 
   res.send(result);
@@ -54,5 +55,3 @@ module.exports = {
   getAProduct,
   getCartProducts,
 };
-
-// helll
